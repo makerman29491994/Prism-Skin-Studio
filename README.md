@@ -53,3 +53,6 @@ Version 1.3.8 fixes standalone Windows white fields and unreadable text by selec
 - Cape exports are verified and distinguish normal Minecraft import from direct installation.
 - Correct Unicode labels and safe discovery across inaccessible game drives.
 - Decorative preview shadows are removed.
+
+## AI Usage
+Ai was used as the main programmer for this project. I don't really know how to code :( 
