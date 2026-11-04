@@ -1,8 +1,18 @@
 # Prism Skin Studio
 
-Standalone Windows app, separated from the combined Prism project. Current version: **1.3.14**.
+Windows app for creating and installing Minecraft Bedrock skin packs. Current version: **1.3.14**.
 
 Create multi-skin Minecraft Bedrock `.mcpack` files from PNG skins, preview classic/slim models and capes with mouse orbit, manage Prism installations, and use reversible local cape installation. Close Minecraft before any install or restore operation.
+
+## Features
+
+- Build packs with multiple PNG skins and individual capes.
+- Preview classic and slim skins with mouse rotation.
+- Name and organize skins within a pack.
+- Install Studio collections or saved Prism `.mcpack` files through **Install skins**.
+- Save pack copies, manage installed Prism packs and undo installations.
+
+For capes, use **Install skins**; ordinary Minecraft `.mcpack` import may ignore cape data. Close Minecraft before installing or restoring a pack.
 
 ## Run from source (Windows)
 
@@ -35,24 +45,9 @@ python -m PyInstaller --noconfirm app.spec
 
 The executable is written to `dist/Prism Skin Studio.exe`. Alternatively, run **Build Windows app** manually from GitHub Actions; it uploads a downloadable build artifact and does not publish a release automatically.
 
-## Repository scope
-
-Only this app's Python modules, its own logo, isolated tests, build files and license notices are tracked. Game installations, private packs, exported models/skins, account data, test output and replay code are excluded.
-
 ## Licensing and public release
 
 This repository is public. No open-source license has been selected for the application's source; public visibility does not grant a license to reuse or redistribute it. Third-party code remains under its own licenses; see [notices](THIRD_PARTY_NOTICES.md). Not an official Minecraft or Mine-imator product.
-
-Version 1.3.8 fixes standalone Windows white fields and unreadable text by selecting the clam ttk theme before creating controls. A hand-drawn About button replaces the native white menu bar, and Windows title bars use the app palette.
-
-## Recent changes
-
-- Compact Install skins window for complete Studio collections and saved Prism packs, including capes.
-- The single main Install skins button is below the editor; the duplicate header button is removed.
-- More options contains folder selection, save-copy, Undo and legacy restore.
-- Cape exports are verified and distinguish normal Minecraft import from direct installation.
-- Correct Unicode labels and safe discovery across inaccessible game drives.
-- Decorative preview shadows are removed.
 
 ## AI Usage
 Ai was used as the main programmer for this project. I don't really know how to code :( 
