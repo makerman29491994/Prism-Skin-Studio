@@ -1,8 +1,8 @@
 # Prism Skin Studio
 
-Private standalone app, separated from the combined Prism project. Current version: **1.3.8**. No replay-to-world functionality or resource-pack assets are included.
+Private standalone app, separated from the combined Prism project. Current version: **1.3.8**.
 
-Create multi-skin Minecraft Bedrock `.mcpack` files from PNG skins, preview classic/slim models and capes with mouse orbit, manage Prism installations, and use reversible local cape installation. An advanced restore-only screen can recover originals from earlier Prism Marketplace replacements. New Marketplace replacement is disabled; it does not grant ownership or change account entitlements. Close Minecraft before any install or restore operation. Zombie-pose export is retired.
+Create multi-skin Minecraft Bedrock `.mcpack` files from PNG skins, preview classic/slim models and capes with mouse orbit, manage Prism installations, and use reversible local cape installation. Close Minecraft before any install or restore operation.
 
 ## Run from source (Windows)
 
