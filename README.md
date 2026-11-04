@@ -1,6 +1,6 @@
 # Prism Skin Studio
 
-Private standalone app, separated from the combined Prism project. Current version: **1.3.8**.
+Private standalone app, separated from the combined Prism project. Current version: **1.3.14**.
 
 Create multi-skin Minecraft Bedrock `.mcpack` files from PNG skins, preview classic/slim models and capes with mouse orbit, manage Prism installations, and use reversible local cape installation. Close Minecraft before any install or restore operation.
 
@@ -44,3 +44,12 @@ Only this app's Python modules, its own logo, isolated tests, build files and li
 No open-source license has been selected for the application's source yet. Keep the repository private until the owner chooses the licensing and completes the public-release review. Third-party code remains under its own licenses; see [notices](THIRD_PARTY_NOTICES.md). Not an official Minecraft or Mine-imator product.
 
 Version 1.3.8 fixes standalone Windows white fields and unreadable text by selecting the clam ttk theme before creating controls. A hand-drawn About button replaces the native white menu bar, and Windows title bars use the app palette.
+
+## Recent changes
+
+- Compact Install skins window for complete Studio collections and saved Prism packs, including capes.
+- The single main Install skins button is below the editor; the duplicate header button is removed.
+- More options contains folder selection, save-copy, Undo and legacy restore.
+- Cape exports are verified and distinguish normal Minecraft import from direct installation.
+- Correct Unicode labels and safe discovery across inaccessible game drives.
+- Decorative preview shadows are removed.

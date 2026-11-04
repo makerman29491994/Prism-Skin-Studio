@@ -1,6 +1,6 @@
 """Standalone app identity."""
 APP_NAME = 'Prism Skin Studio'
-APP_VERSION = "1.3.8"
+APP_VERSION = "1.3.14"
 
 def show_about(parent):
     from tkinter import messagebox

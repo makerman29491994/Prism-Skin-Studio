@@ -6,7 +6,14 @@ from PrismInstalledPacks import _plain_directory,prism_pack
 
 def game_skin_roots():
     candidates=[Path(f"{drive}:/XboxGames/Minecraft for Windows/Content/data/skin_packs") for drive in "CDEFGHIJKLMNOPQRSTUVWXYZ"]
-    return [p for p in candidates if p.is_dir()]
+    roots=[]
+    for path in candidates:
+        try:
+            if path.is_dir():roots.append(path)
+        except OSError:
+            # Other XboxGames drives can exist but deny this process access.
+            continue
+    return roots
 
 
 def checked_root(path):

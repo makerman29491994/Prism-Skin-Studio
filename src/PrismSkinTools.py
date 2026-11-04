@@ -68,10 +68,8 @@ class SkinStudio:
         head.create_line(104,78,165,75,224,79,282,76,fill=MINT,width=3,smooth=True)
         packs_button=SketchButton(head,"Installed packs…",self.installed_packs,180)
         packs_window=head.create_window(720,44,window=packs_button,anchor="e")
-        install_button=SketchButton(head,"Install skins…",self.install_skins,160,True)
-        install_window=head.create_window(530,44,window=install_button,anchor="e")
         def place_header_actions(event):
-            head.coords(packs_window,event.width-4,44);head.coords(install_window,event.width-194,44)
+            head.coords(packs_window,event.width-4,44)
         head.bind("<Configure>",place_header_actions)
         body=tk.Frame(outer,bg=BG);body.pack(fill="both",expand=True,pady=(16,12));body.columnconfigure(0,weight=3);body.columnconfigure(1,weight=2);body.rowconfigure(0,weight=1)
         form=self.paper(body);form.master.grid(row=0,column=0,sticky="nsew",padx=(0,18));form.columnconfigure(0,weight=1)
@@ -92,11 +90,11 @@ class SkinStudio:
         self.zombie.trace_add("write",lambda *args:self.update_preview())
         self.model.trace_add("write",lambda *args:self.update_preview())
         self.skin_name.trace_add("write",self.rename_skin)
-        tk.Label(form,text="Add this skin to your pack, or save your pack file below.",bg=CARD,fg=MUTED,font=("Ink Free",11),justify="left",wraplength=385).grid(row=10,column=0,columnspan=2,sticky="ew",pady=(8,6))
+        tk.Label(form,text="Add more skins to your pack, then use Install skins.",bg=CARD,fg=MUTED,font=("Ink Free",11),justify="left",wraplength=385).grid(row=10,column=0,columnspan=2,sticky="ew",pady=(8,6))
         actions=tk.Frame(form,bg=CARD);actions.grid(row=12,column=0,columnspan=2,sticky="ew",pady=(8,12))
         actions.columnconfigure(0,weight=3);actions.columnconfigure(1,weight=2)
         SketchButton(actions,"Add to pack",self.add_to_pack,205,True).grid(row=0,column=0,sticky="ew",padx=(0,6))
-        SketchButton(actions,"Save .mcpack…",self.export,155).grid(row=0,column=1,sticky="ew")
+        SketchButton(actions,"Install skins…",self.install_skins,155).grid(row=0,column=1,sticky="ew")
         SketchButton(actions,"Clear",self.start_over,155).grid(row=1,column=0,columnspan=2,sticky="ew",pady=(5,0))
         self.pack_count=tk.StringVar(parent,value="Your pack · 0 skins")
         tk.Label(preview,textvariable=self.pack_count,bg=CARD,fg=MINT,font=("Ink Free",18,"bold")).grid(row=0,column=0,sticky="w",pady=(8,8))
@@ -142,7 +140,9 @@ class SkinStudio:
         self._pack_manager=InstalledPacks(self)
     def cape_installer(self):
         previous=getattr(self,"_cape_installer",None)
-        if previous is not None and previous.window.winfo_exists():previous.window.lift();return
+        if previous is not None and previous.window.winfo_exists():
+            if previous.pack_path is None:previous.use_studio()
+            previous.window.lift();return
         from PrismCapeInstallerUI import CapeInstaller
         self._cape_installer=CapeInstaller(self)
     def install_skins(self):
@@ -214,7 +214,7 @@ class SkinStudio:
     def pick_cape(self):
         path=filedialog.askopenfilename(parent=self.parent,title="Choose a cape PNG or picture",filetypes=[("PNG cape","*.png")])
         if not path:return
-        try:self.cape=load_cape(path);self.cape_path.set(path);self.status.set("Cape added to the preview and experimental custom model.");self.update_preview()
+        try:self.cape=load_cape(path);self.cape_path.set(path);self.status.set("Cape added. Use Install skins to load it in Minecraft; normal .mcpack importing may omit capes.");self.update_preview()
         except (OSError,ValueError) as exc:messagebox.showerror("Check your cape",str(exc),parent=self.parent)
     def clear_cape(self):self.cape=None;self.cape_path.set("");self.update_preview()
     def turn(self,amount):self.yaw=(self.yaw+amount)%360;self.update_preview()
@@ -268,9 +268,11 @@ class SkinStudio:
         try:
             self.save_current()
             result=export_collection(self.skins,path,self.name.get(),include_custom=True)
-            self.status.set(f"Ta-da! All {result['skins']} skins are in one pack ({result['variants']} versions). Open the .mcpack in Minecraft to import it.")
+            if result["cape_skins"]:
+                self.status.set(f"Saved {result['skins']} skins with {result['cape_skins']} capes included. Use Install skins for capes; normal .mcpack import may omit them.")
+            else:self.status.set(f"Saved {result['skins']} skins. Open the .mcpack in Minecraft to import them.")
             note="\n\nCapes and zombie poses were kept in the preview. This export uses standard player models." if result["preview_only"] else ""
-            if result["enhanced_skins"]:note="\n\nCape textures are included. For Minecraft to load them, use Install skins in Skin Studio instead of normal importing."
+            if result["cape_skins"]:note=f"\n\n{result['cape_skins']} cape textures verified in the saved file.\nFor capes, use Install skins in Skin Studio. Normal .mcpack importing may show only the body skin."
             poses=sum(bool(s.get("zombie")) for s in self.skins)
             messagebox.showinfo("Skin pack ready",f"Saved {result['skins']} skins in one pack:\n{path}"+note,parent=self.parent)
         except (OSError,ValueError) as exc:messagebox.showerror("Couldn't make the pack",str(exc),parent=self.parent)
