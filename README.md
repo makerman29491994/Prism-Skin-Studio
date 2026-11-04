@@ -1,3 +1,5 @@
+
+<img width="1254" height="1254" alt="Skin-Studio-logo" src="https://github.com/user-attachments/assets/94b29410-cfb9-41f6-86e9-55381f523ba1" />
 # Prism Skin Studio
 
 Windows app for creating and installing Minecraft Bedrock skin packs. Current version: **1.3.14**.
