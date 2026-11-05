@@ -53,7 +53,7 @@ The build excludes Pillow's optional NumPy integration, which Skin Studio does n
 
 ## Licensing and public release
 
-This repository is public. No open-source license has been selected for the application's source; public visibility does not grant a license to reuse or redistribute it. Third-party code remains under its own licenses; see [notices](THIRD_PARTY_NOTICES.md). Not an official Minecraft or Mine-imator product.
+The application source is licensed under the [Apache License 2.0](LICENSE). Third-party dependencies retain their own licenses; see [third-party notices](THIRD_PARTY_NOTICES.md). User-provided models and textures remain subject to their respective licenses. This is not an official Minecraft or Mine-imator product.
 
 ## AI Usage
 Ai was used as the main programmer for this project. I don't really know how to code :( 
