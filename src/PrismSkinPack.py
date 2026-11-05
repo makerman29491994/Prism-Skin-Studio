@@ -16,7 +16,25 @@ def load_skin(path):
         mappings=[((4,16,8,20),(20,48)),((8,16,12,20),(24,48)),((8,20,12,32),(16,52)),((4,20,8,32),(20,52)),((0,20,4,32),(24,52)),((12,20,16,32),(28,52)),((44,16,48,20),(36,48)),((48,16,52,20),(40,48)),((48,20,52,32),(32,52)),((44,20,48,32),(36,52)),((40,20,44,32),(40,52)),((52,20,56,32),(44,52))]
         for box,destination in mappings:
             skin.paste(original.crop(box).transpose(Image.Transpose.FLIP_LEFT_RIGHT),destination)
+        skin.info["prism_legacy_skin"]=True
     return skin
+
+
+def guess_slim(skin):
+    """Suggest slim only when both base arms have its transparent UV padding.
+
+    PNGs have no mandatory arm-model field. Painted padding is ambiguous, so
+    keep classic as the fallback; callers must still allow manual selection.
+    """
+    if skin.size not in ((64,64),(128,128)) or skin.info.get("prism_legacy_skin"):
+        return False
+    scale=skin.width//64
+    alpha=skin.getchannel("A")
+    def painted(box):
+        return alpha.crop(tuple(value*scale for value in box)).getbbox() is not None
+    unused=((50,16,52,20),(54,20,56,32),(42,48,44,52),(46,52,48,64))
+    used=((44,20,47,32),(36,52,39,64))
+    return not any(painted(box) for box in unused) and all(painted(box) for box in used)
 
 
 def load_cape(path):

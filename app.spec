@@ -12,6 +12,9 @@ with Image.open(root/"src"/'Skin-Studio-logo.png') as source:
     if bounds:image=image.crop(bounds)
     image.thumbnail((256,256),Image.Resampling.LANCZOS)
     square=Image.new("RGBA",(256,256));square.paste(image,((256-image.width)//2,(256-image.height)//2));square.save(icon,sizes=[(16,16),(32,32),(48,48),(128,128),(256,256)])
-a=Analysis([str(root/"src/main.py")],pathex=[str(root/"src")],datas=datas,binaries=[],hiddenimports=[],excludes=["pytest","IPython","notebook","amulet","PyMCTranslate","amulet_nbt"],noarchive=False,optimize=1)
+# Pillow optionally imports NumPy for array interoperability. Skin Studio uses
+# Pillow images directly, so collecting NumPy would add an unused numerical
+# runtime. Keep all image codecs and the Marketplace cryptography runtime.
+a=Analysis([str(root/"src/main.py")],pathex=[str(root/"src")],datas=datas,binaries=[],hiddenimports=[],excludes=["pytest","IPython","notebook","amulet","PyMCTranslate","amulet_nbt","numpy"],noarchive=False,optimize=1)
 pyz=PYZ(a.pure)
 exe=EXE(pyz,a.scripts,a.binaries,a.datas,[],name='Prism Skin Studio',console=False,icon=str(icon),upx=False)

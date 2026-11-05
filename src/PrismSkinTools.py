@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import ttk,filedialog,messagebox
 from pathlib import Path
 from PIL import Image,ImageTk
-from PrismSkinPack import load_skin,load_cape,prepare_model,prepare_preview_mesh,preview_model,export_collection
+from PrismSkinPack import load_skin,guess_slim,load_cape,prepare_model,prepare_preview_mesh,preview_model,export_collection
 
 BG="#14221b";CARD="#1d3025";INK="#e8f5e8";MUTED="#aac8ad";MINT="#a8dca0";EDGE="#628c69"
 
@@ -153,11 +153,19 @@ class SkinStudio:
         self.save_current()
         self.cape_installer()
     def set_skin(self,path):
-        if self.draft is not None:raise ValueError("Click Add to pack to save the current skin, or Remove skin to clear it, before picking another PNG.")
+        # Validate first so a cancelled/invalid replacement keeps the current skin.
         skin=load_skin(path)
         self.save_current()
-        self.select_skin(None,draft={"skin":skin,"skin_path":str(path),"name":Path(path).stem,"cape":None,"cape_path":"","slim":False,"zombie":False})
-        self.status.set("Set this skin's name, cape and pose, then click Add to pack.")
+        slim=guess_slim(skin)
+        item=self.draft if self.draft is not None else self.skins[self.selected_index] if self.selected_index is not None else None
+        if item is None:
+            self.select_skin(None,draft={"skin":skin,"skin_path":str(path),"name":Path(path).stem,"cape":None,"cape_path":"","slim":slim,"zombie":False})
+        else:
+            if item["name"]==Path(item["skin_path"]).stem:item["name"]=Path(path).stem
+            item.update(skin=skin,skin_path=str(path),slim=slim)
+            self.select_skin(self.selected_index,draft=self.draft)
+        action="click Add to pack" if self.draft is not None else "your pack is updated"
+        self.status.set(f"Suggested {'Slim' if slim else 'Classic'} arms from the PNG. You can change Arm size; {action}.")
     def add_to_pack(self):
         if self.draft is None:
             self.status.set("Pick a PNG to add a new skin. Saved skins update as you edit them.");return

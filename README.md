@@ -3,7 +3,7 @@
 
 # Prism Skin Studio
 
-Windows app for creating and installing Minecraft Bedrock skin packs. Current version: **1.3.14**.
+Windows app for creating and installing Minecraft Bedrock skin packs. Current version: **1.3.16**.
 
 Create multi-skin Minecraft Bedrock `.mcpack` files from PNG skins, preview classic/slim models and capes with mouse orbit, manage Prism installations, and use reversible local cape installation. Close Minecraft before any install or restore operation.
 
@@ -43,10 +43,13 @@ Tests use generated temporary fixtures. They do not modify a real Minecraft inst
 
 ```powershell
 python -m pip install -r requirements-build.txt
-python -m PyInstaller --noconfirm app.spec
+python -m PyInstaller --noconfirm --clean app.spec
+python tools/verify-packaging.py . "dist/Prism Skin Studio.exe"
 ```
 
 The executable is written to `dist/Prism Skin Studio.exe`. Alternatively, run **Build Windows app** manually from GitHub Actions; it uploads a downloadable build artifact and does not publish a release automatically.
+
+The build excludes Pillow's optional NumPy integration, which Skin Studio does not use. All Pillow image codecs and the cryptography runtime remain included. Packaging verification runs the fixture suite against modules extracted from the executable, with installed third-party packages and application source imports disabled.
 
 ## Licensing and public release
 
@@ -54,3 +57,7 @@ This repository is public. No open-source license has been selected for the appl
 
 ## AI Usage
 Ai was used as the main programmer for this project. I don't really know how to code :( 
+
+Skin PNGs now suggest Slim or Classic arms automatically from transparent arm padding. Legacy and ambiguous skins default to Classic. Arm size remains editable, and each skin retains its manual choice.
+
+Picking another PNG replaces the displayed draft or selected pack skin in place. Custom names and capes stay attached, arm size is suggested again, and invalid files or cancelled picks leave the skin unchanged.
